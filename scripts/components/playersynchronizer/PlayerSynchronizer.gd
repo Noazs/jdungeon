@@ -33,6 +33,7 @@ var current_target: Node2D
 var attack_timer: Timer
 var original_direction: bool = true
 
+var last_processed_direction: Vector2 = Vector2.ZERO
 
 func _ready():
 	target_node = get_parent()
@@ -115,7 +116,10 @@ func _physics_process(delta):
 		var direction: Vector2 = Input.get_vector(
 			"j_move_left", "j_move_right", "j_move_up", "j_move_down"
 		)
-		input_buffer.append({"cf": current_frame, "dir": direction})
+
+		if direction != last_processed_direction:
+			input_buffer.append({"cf": current_frame, "dir": direction})
+			last_processed_direction = direction
 
 		mouse_global_pos = target_node.get_global_mouse_position()
 
